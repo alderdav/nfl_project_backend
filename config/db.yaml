@@ -1,0 +1,5 @@
+connection:
+  database: mydatabase
+  user: postgres
+  password: password
+  port: 5432
