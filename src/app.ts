@@ -1,6 +1,6 @@
 import express, {Application, Request, Response} from 'express';
-import pg from 'pg';
-const { Client } = pg;
+import { DataSource, EntityManager } from 'typeorm';
+import { ApplicationDataSource } from './db/ApplicationDataSource';
 const app: Application = express();
 const port = 3000;
 
@@ -12,17 +12,24 @@ app.listen(port, () => {
     console.log(`Server is running on ${port}`);
 });
 
-const client = new Client({
-    user: 'postgres',
-    password: 'password',
-    host: 'localhost',
+
+const dataSource = new DataSource({
+    type: "postgres",
+    host: "localhost",
     port: 5432,
-    database: 'nfl_db',
-});
+    username: "postgres",
+    password: "password",
+    database: "nfl_db",
+    schema: 'nfl'
+})
 
-await client.connect();
-
-const result = await client.query('select * from nfl_stats.otc_players limit 10')
-console.log(result)
- 
-await client.end()
+await dataSource.initialize()
+    .then(() => {
+        console.log("Data Source has been initialized!")
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization", err)
+    })
+const manager: EntityManager = dataSource.manager;
+const data = await dataSource.query('Select * from nfl.team_colors');
+console.log(data);
