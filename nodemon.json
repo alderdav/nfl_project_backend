@@ -1,6 +1,8 @@
 {
     "watch": ["src"],
-    "ext": "ts",
+    "ext": "ts, js, json",
     "ignore": ["src/**/*.spec.ts"],
-    "exec": "ts-node ./src/app.ts"
+    "execMap" : {
+        "ts" : "SET NODE_OPTIONS='node --loader ts-node/esm && ts-node -T"
+    }
   }
