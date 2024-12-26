@@ -26,7 +26,8 @@ export class ApplicationDataSource {
                 username: "postgres",
                 password: "password",
                 database: "nfl_db",
-                schema: 'nfl'
+                schema: 'nfl',
+                entities: [Team_Colors]
             });
             this.dataSource.initialize()
                 .then(() => {

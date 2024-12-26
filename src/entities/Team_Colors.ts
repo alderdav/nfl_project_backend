@@ -1,20 +1,23 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from "typeorm";
 
-@Entity()
+@Entity("team_colors")
 export class Team_Colors {
-    @Column()
-    team_id: number;
+    @PrimaryColumn()
+    team_id!: number;
 
     @Column()
-    color: string
+    team!: string;
 
     @Column()
-    color2: string
+    color!: string
 
     @Column()
-    color3: string
+    color2!: string
 
     @Column()
-    color4: string
+    color3!: string
+
+    @Column()
+    color4!: string
 
 }
