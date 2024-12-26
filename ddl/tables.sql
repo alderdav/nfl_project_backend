@@ -107,7 +107,7 @@ CREATE TABLE team_colors (
 	color4 varchar(7)
 );
 
-CREATE TABLE nfl.games(
+CREATE TABLE games(
 	game_id varchar(50),
 	season int4,
 	game_type varchar(10),
@@ -154,4 +154,4 @@ CREATE TABLE nfl.games(
 	referee varchar(50),
 	stadium_id varchar(50),
 	stadium varchar(50)
-)
+);

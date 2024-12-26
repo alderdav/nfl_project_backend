@@ -6,3 +6,5 @@ select *
 from player_stats
 join players on player_stats.player_id = players.gsis_id;
 
+-- I can link together games to qbs by games.away_qb_id or games.home_qb_id to players.gsis_id.
+-- I can link teams to games by team name.
