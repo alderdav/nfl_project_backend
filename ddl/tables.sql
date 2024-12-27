@@ -38,7 +38,8 @@ CREATE TABLE players (
 );
 
 -- Try to create a table with new column player_stats_id that is made for every row
-CREATE TABLE nfl_stats.player_stats (
+CREATE TABLE player_stats (
+	id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	player_name varchar(50),
 	player_display_name varchar(50),
 	position varchar(10),
