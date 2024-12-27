@@ -1,9 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn } from "typeorm";
 
-@Entity("team_colors")
+@Entity()
 export class Team_Colors {
     @PrimaryColumn()
-    team_id!: number;
+    team_id?: number;
 
     @Column()
     team!: string;

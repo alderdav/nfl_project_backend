@@ -1,5 +1,9 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import { Team_Colors } from "../entities/Team_Colors";
+import { Players } from "../entities/Players";
+import { Player_Stats } from "../entities/Player_Stats";
+import { Games } from "../entities/Games";
+import { Logos } from "../entities/Logos";
 
 export class ApplicationDataSource {
 
@@ -27,7 +31,7 @@ export class ApplicationDataSource {
                 password: "password",
                 database: "nfl_db",
                 schema: 'nfl',
-                entities: [Team_Colors]
+                entities: [Team_Colors, Players, Player_Stats, Games, Logos]
             });
             this.dataSource.initialize()
                 .then(() => {
