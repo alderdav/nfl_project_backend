@@ -6,7 +6,7 @@ export class Player_Stats {
     id?: number;
 
     @Column()
-    player_id!: string;
+    player_id!: string; //gsis_id
 
     @Column()
     player_name!: string;
