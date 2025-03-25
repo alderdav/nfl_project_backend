@@ -1,9 +1,9 @@
 import { DataSource, DataSourceOptions } from "typeorm";
-import { Team_Colors } from "../entities/Team_Colors";
-import { Players } from "../entities/Players";
-import { Player_Stats } from "../entities/Player_Stats";
-import { Games } from "../entities/Games";
-import { Logos } from "../entities/Logos";
+import { Team_Colors } from "../models/entities/Team_Colors";
+import { Players } from "../models/entities/Players";
+import { Player_Stats } from "../models/entities/Player_Stats";
+import { Games } from "../models/entities/Games";
+import { Logos } from "../models/entities/Logos";
 
 export class ApplicationDataSource {
 
