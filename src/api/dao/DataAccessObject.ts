@@ -6,7 +6,7 @@ import { Player_Stats } from "../../models/entities/Player_Stats";
 import { Players } from "../../models/entities/Players";
 import { Team_Colors } from "../../models/entities/Team_Colors";
 
-export class TeamsDao {
+export class DataAccessObject {
 
     private dataSource: DataSource;
 
