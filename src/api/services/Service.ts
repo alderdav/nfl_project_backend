@@ -4,6 +4,7 @@ import { Logos } from "../../models/entities/Logos";
 import { DataAccessObject } from "../dao/DataAccessObject";
 import { Players } from "../../models/entities/Players";
 import { Team_Colors } from "../../models/entities/Team_Colors";
+import { Team } from "../../models/views/Team";
 
 export class Service {
 
@@ -13,7 +14,7 @@ export class Service {
         this.dao = new DataAccessObject();
     }
 
-    getTeams(): Promise<Logos[]> {
+    getTeams(): Promise<Team[]> {
         return this.dao.getTeams();
     }
 

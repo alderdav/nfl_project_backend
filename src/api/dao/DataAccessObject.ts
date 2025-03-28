@@ -5,6 +5,7 @@ import { DataSource } from "typeorm";
 import { Player_Stats } from "../../models/entities/Player_Stats";
 import { Players } from "../../models/entities/Players";
 import { Team_Colors } from "../../models/entities/Team_Colors";
+import { Team } from "../../models/views/Team";
 
 export class DataAccessObject {
 
@@ -14,9 +15,12 @@ export class DataAccessObject {
         this.dataSource = ApplicationDataSource.getInstance().getDataSource();
     }
 
-    getTeams(): Promise<Logos[]> {
+    // This used to be Logos[]
+    getTeams(): Promise<Team[]> {
         return new Promise((resolve, reject) => {
-            this.dataSource.getRepository(Logos).find()
+            this.dataSource.getRepository(Team).findBy({
+                season: 2019
+            })
                 .then(data => {
                     resolve(data);
                 })
