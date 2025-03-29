@@ -1,28 +1,31 @@
 import { Games } from "../../models/entities/Games";
 import { ApplicationDataSource } from "../../db/ApplicationDataSource";
-import { Logos } from "../../models/entities/Logos";
 import { DataSource } from "typeorm";
 import { Player_Stats } from "../../models/entities/Player_Stats";
 import { Players } from "../../models/entities/Players";
 import { Team_Colors } from "../../models/entities/Team_Colors";
-import { Team } from "../../models/views/Team";
+import { Team_Info } from "../../models/views/Team_Info";
+import { Team } from "../../models/domain-objects/Team";
+import { DAOFormatter } from "./formatter/DOAFormatter";
 
 export class DataAccessObject {
 
     private dataSource: DataSource;
+    private daoFormatter: DAOFormatter;
 
     constructor() {
         this.dataSource = ApplicationDataSource.getInstance().getDataSource();
+        this.daoFormatter = new DAOFormatter();
     }
 
-    // This used to be Logos[]
     getTeams(): Promise<Team[]> {
         return new Promise((resolve, reject) => {
-            this.dataSource.getRepository(Team).findBy({
+            this.dataSource.getRepository(Team_Info).findBy({
                 season: 2019
             })
                 .then(data => {
-                    resolve(data);
+                    const teams: Team[] = this.daoFormatter.createTeamDomainObjects(data);
+                    resolve(teams)
                 })
         })
     }

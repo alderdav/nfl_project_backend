@@ -1,11 +1,11 @@
 export interface Team {
     teamId: number; //teams.teamId (nfl-play-by-play)
+    team: string; // logos.team -> This is what is being used to join nfl.logos, nfl.team_colors, nfl-play-by-play.teams
     city: string; //teams.cityState
     fullName: string; //teams.fullName
     nickName: string; // teams.nick
     conference: string; // teams.conferenceAbbr
     division: string; // teams.divisionAbbr
-    team: string; // logos.team -> This is what is being used to join nfl.logos, nfl.team_colors, nfl-play-by-play.teams
     team_logo: string; // logos.team_logo
     colors: string[]; // team_colors.color - team_colors.color4
 }

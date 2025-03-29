@@ -1,10 +1,9 @@
 import { Player_Stats } from "../../models/entities/Player_Stats";
 import { Games } from "../../models/entities/Games";
-import { Logos } from "../../models/entities/Logos";
 import { DataAccessObject } from "../dao/DataAccessObject";
 import { Players } from "../../models/entities/Players";
 import { Team_Colors } from "../../models/entities/Team_Colors";
-import { Team } from "../../models/views/Team";
+import { Team } from "../../models/domain-objects/Team";
 
 export class Service {
 
