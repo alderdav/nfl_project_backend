@@ -3,7 +3,13 @@ import { Entity, Column, PrimaryColumn } from "typeorm";
 @Entity()
 export class Games {
     @PrimaryColumn()
-    game_id?: string;
+    game_id!: string;
+
+    @Column()
+    season!: number;
+
+    @Column()
+    game_type!: string;
 
     @Column()
     week!: number;

@@ -1,6 +1,6 @@
 import { Games } from "../../models/entities/Games";
 import { ApplicationDataSource } from "../../db/ApplicationDataSource";
-import { DataSource } from "typeorm";
+import { Any, DataSource } from "typeorm";
 import { Player_Stats } from "../../models/entities/Player_Stats";
 import { Players } from "../../models/entities/Players";
 import { Team_Colors } from "../../models/entities/Team_Colors";
@@ -46,13 +46,33 @@ export class DataAccessObject {
         })
     }
 
-    getGames(): Promise<Games[]> {
+    //I need to make this more flexible, include filter by team
+    getGamesPerSeason(season: number): Promise<Games[]> {
         return new Promise((resolve, reject) => {
             this.dataSource.getRepository(Games).findBy({
-                game_id: "1999_01_BUF_IND"
+                season: season
             })
-            .then((data) => {
-                resolve(data);
+            .then((arrGames: Games[]) => {
+                resolve(arrGames);
+            })
+        })
+    }
+
+    getGamesPerSeasonPerTeam(season: number, teams: string[]): Promise<Games[]> {
+        return new Promise((resolve, reject) => {
+            this.dataSource.getRepository(Games).findBy({
+                season: season,
+                away_team: Any(teams)
+            })
+            .then((arrAwayGames: Games[]) => {
+                this.dataSource.getRepository(Games).findBy({
+                    season: season,
+                    home_team: Any(teams)
+                })
+                .then((arrHomeGames: Games[]) => {
+                    let arrTotalGames: Games[] = [...arrAwayGames, ...arrHomeGames];
+                    resolve(arrTotalGames);
+                })
             })
         })
     }

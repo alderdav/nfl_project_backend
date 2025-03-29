@@ -22,8 +22,12 @@ export class Service {
         return this.dao.getAllSeasons();
     }
 
-    getGames(): Promise<Games[]> {
-        return this.dao.getGames();
+    getGamesPerSeason(season: number): Promise<Games[]> {
+        return this.dao.getGamesPerSeason(season);
+    }
+
+    getGamesPerSeasonPerTeam(season: number, teams: string[]): Promise<Games[]> {
+        return this.dao.getGamesPerSeasonPerTeam(season, teams);
     }
 
     getPlayerStats(): Promise<Player_Stats[]> {

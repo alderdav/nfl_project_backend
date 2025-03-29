@@ -24,10 +24,20 @@ export class Controller {
     }
 
     getGames(req: any, res: any) {
-        this.service.getGames()
-            .then(data => {
-                res.send(data);
+        let season: number = req.params.season;
+        let teamsQueryPararm: string | undefined = req.query.teams;
+        if(teamsQueryPararm) {
+            let teamsList = teamsQueryPararm.split(',');
+            this.service.getGamesPerSeasonPerTeam(season, teamsList)
+                .then(games => {
+                    res.send(games);
+                })
+        } else {
+            this.service.getGamesPerSeason(season)
+            .then(games => {
+                res.send(games);
             })
+        }
     }
 
     getPlayerStats(req: any, res: any) {

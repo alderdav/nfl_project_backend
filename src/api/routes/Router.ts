@@ -13,7 +13,7 @@ router.get('/season/all-seasons', (req, res) => {
     controller.getAllSeasons(req, res);
 })
 
-router.get('/games', (req, res) => {
+router.get('/season/:season/games', (req, res) => {
     const controller = new Controller();
     controller.getGames(req, res);
 })
