@@ -7,6 +7,8 @@ import { Team_Colors } from "../../models/entities/Team_Colors";
 import { Team_Info } from "../../models/views/Team_Info";
 import { Team } from "../../models/domain-objects/Team";
 import { DAOFormatter } from "./formatter/DOAFormatter";
+import { Seasons } from "../../models/domain-objects/Seasons";
+import { Seasons as vSeasons } from "../../models/views/Seasons";
 
 export class DataAccessObject {
 
@@ -18,15 +20,29 @@ export class DataAccessObject {
         this.daoFormatter = new DAOFormatter();
     }
 
-    getTeams(): Promise<Team[]> {
+    getAllTeams(season: number): Promise<Team[]> {
         return new Promise((resolve, reject) => {
             this.dataSource.getRepository(Team_Info).findBy({
-                season: 2019
+                season: season
             })
-                .then(data => {
-                    const teams: Team[] = this.daoFormatter.createTeamDomainObjects(data);
-                    resolve(teams)
-                })
+            .then((team_info: Team_Info[]) => {
+                const teams: Team[] = this.daoFormatter.createTeamDomainObjects(team_info);
+                resolve(teams)
+            })
+        })
+    }
+
+    getAllSeasons(): Promise<Seasons> {
+        return new Promise((resolve, reject) => {
+            this.dataSource.getRepository(vSeasons).find({
+                order: {
+                    season: "ASC"
+                }
+            })
+            .then((arrSeasons: vSeasons[]) => {
+                const seasons: Seasons = this.daoFormatter.createSeasonsDomainObject(arrSeasons);
+                resolve(seasons)
+            })
         })
     }
 

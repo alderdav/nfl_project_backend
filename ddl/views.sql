@@ -4,3 +4,6 @@ from team_colors tc
 join logos l on l.team = tc.team
 join teams t on l.team = t.abbr
 order by l.team asc;
+
+create view nfl.v_seasons as
+select distinct season from teams;

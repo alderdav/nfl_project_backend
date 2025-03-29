@@ -1,5 +1,7 @@
+import { Seasons } from "../../../models/domain-objects/Seasons";
 import { Team } from "../../../models/domain-objects/Team";
 import { Team_Info } from "../../../models/views/Team_Info";
+import { Seasons as vSeasons } from "../../../models/views/Seasons";
 
 export class DAOFormatter {
 
@@ -25,5 +27,13 @@ export class DAOFormatter {
             teams.push(team);
         })
         return teams;
+    }
+
+    createSeasonsDomainObject(arrSeasons: vSeasons[]): Seasons {
+        let seasonsObj: Seasons = {seasons: []};
+        arrSeasons.forEach(vSeason => {
+            seasonsObj.seasons.push(vSeason.season)
+        })
+        return seasonsObj;
     }
 }

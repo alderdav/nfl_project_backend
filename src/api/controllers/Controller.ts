@@ -8,10 +8,18 @@ export class Controller {
         this.service = new Service();
     }
 
-    getTeams(req: any, res: any) { // I want to find out the correct interface for req, res
-        this.service.getTeams()
-            .then(data => {
-                res.send(data);
+    getAllTeams(req: any, res: any) { // I want to find out the correct interface for req, res
+        let season: number = req.params.season;
+        this.service.getAllTeams(season)
+            .then(teams => {
+                res.send(teams);
+            })
+    }
+
+    getAllSeasons(req: any, res: any) {
+        this.service.getAllSeasons()
+            .then(seasons => {
+                res.send(seasons)
             })
     }
 

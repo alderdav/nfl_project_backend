@@ -3,9 +3,14 @@ import { Controller } from '../controllers/Controller';
 
 const router = express.Router();
 
-router.get('/teams', (req, res) => {
+router.get('/season/:season/teams/all-teams', (req, res) => {
     const controller = new Controller();
-    controller.getTeams(req, res);
+    controller.getAllTeams(req, res);
+})
+
+router.get('/season/all-seasons', (req, res) => {
+    const controller = new Controller();
+    controller.getAllSeasons(req, res);
 })
 
 router.get('/games', (req, res) => {
