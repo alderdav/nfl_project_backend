@@ -9,6 +9,9 @@ import { Team } from "../../models/domain-objects/Team";
 import { DAOFormatter } from "./formatter/DOAFormatter";
 import { Seasons } from "../../models/domain-objects/Seasons";
 import { Seasons as vSeasons } from "../../models/views/Seasons";
+import { Roster } from "../../models/domain-objects/Roster";
+import { PlayerProfile } from "src/models/domain-objects/PlayerProfile";
+import { SeasonStats } from "src/models/domain-objects/SeasonStats";
 
 export class DataAccessObject {
 
@@ -70,41 +73,62 @@ export class DataAccessObject {
                     home_team: Any(teams)
                 })
                 .then((arrHomeGames: Games[]) => {
-                    let arrTotalGames: Games[] = [...arrAwayGames, ...arrHomeGames];
+                    const arrTotalGames: Games[] = [...arrAwayGames, ...arrHomeGames];
                     resolve(arrTotalGames);
                 })
             })
         })
     }
 
-    getPlayerStats(): Promise<Player_Stats[]> {
+    getRoster(season: number, team: string): Promise<Roster> {
         return new Promise((resolve, reject) => {
-            this.dataSource.getRepository(Player_Stats).findBy({
-                player_id: '00-0005363'
+            this.dataSource.getRepository(Player_Stats)
+                .createQueryBuilder('player_stats')
+                .where({
+                    season: season,
+                    recent_team: team
+                })
+                .distinctOn(['player_stats.player_id'])
+                .getMany()
+            .then(arrPlayers => {
+                const players = this.daoFormatter.createRosterDomainObject(arrPlayers);
+                resolve(players);
             })
-            .then((data) => {
-                resolve(data);
-            })
+
         })
     }
 
-    getPlayerInfo(): Promise<Players[]> {
+    // CREATE REAL CATCHE EXCEPTIONS - THIS IS A HACK
+    getPlayerProfile(playerId: string): Promise<PlayerProfile> {
         return new Promise((resolve, reject) => {
             this.dataSource.getRepository(Players).findBy({
-                gsis_id: '00-0005363'
+                gsis_id: playerId
             })
-            .then((data) => {
-                resolve(data);
+            .then((playerInfo: Players[]) => {
+                if(playerInfo === null) {
+                    reject('Failed to find player profile due to incorrect playerid')
+                }
+                const playerProfile: PlayerProfile = this.daoFormatter.createPlayerProfile(playerInfo[0]);
+                this.dataSource.getRepository(Player_Stats).find({
+                    where: {
+                        player_id: playerId
+                    },
+                    order: {
+                        season: "ASC",
+                        week: "ASC"
+                    }
+                })
+                .then((arrPlayerGameStats: Player_Stats[]) => {
+                    const stats: SeasonStats[] = this.daoFormatter.createSeasonStats(arrPlayerGameStats);
+                    playerProfile.stats = stats;
+                    resolve(playerProfile)
+                })
+                
+            })
+            .catch(error => {
+                throw new Error("coulnd find playerid => " + error);
             })
         })
     }
 
-    getTeamColors(): Promise<Team_Colors[]> {
-        return new Promise((resolve, reject) => {
-            this.dataSource.getRepository(Team_Colors).find()
-            .then((data) => {
-                resolve(data);
-            })
-        })
-    }
 }

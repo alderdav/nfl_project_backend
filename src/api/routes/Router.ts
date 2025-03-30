@@ -3,34 +3,35 @@ import { Controller } from '../controllers/Controller';
 
 const router = express.Router();
 
+// Get all teams and their info
 router.get('/season/:season/teams/all-teams', (req, res) => {
     const controller = new Controller();
     controller.getAllTeams(req, res);
 })
 
+// Get all possible seasons with data on it
 router.get('/season/all-seasons', (req, res) => {
     const controller = new Controller();
     controller.getAllSeasons(req, res);
 })
 
+// (1) Get all of the games in a season
+// (2) Get all of the games for a particular team(s) in a season
 router.get('/season/:season/games', (req, res) => {
     const controller = new Controller();
     controller.getGames(req, res);
 })
 
-router.get('/player_stats', (req, res) => {
+// Get Roster for a particular team
+router.get('/season/:season/team/:team/roster', (req, res) => {
     const controller = new Controller();
-    controller.getPlayerStats(req, res);
+    controller.getRoster(req, res);
 })
 
-router.get('/player_info', (req, res) => {
+// Get Player Details and Stats
+router.get('/player/:player_id/player_profile', (req, res) => {
     const controller = new Controller();
-    controller.getPlayerInfo(req, res);
-})
-
-router.get('/team_colors', (req, res) => {
-    const controller = new Controller();
-    controller.getTeamColors(req, res);
+    controller.getPlayerProfile(req, res);
 })
 
 export {router as Router};

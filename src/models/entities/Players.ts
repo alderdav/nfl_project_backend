@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryColumn } from "typeorm";
-import { Url } from "url";
 
 @Entity()
 export class Players {
@@ -65,6 +64,9 @@ export class Players {
 
     @Column()
     draft_pick!: number;
+
+    @Column()
+    draft_team!: string;
 
     @Column()
     draft_round!: number;

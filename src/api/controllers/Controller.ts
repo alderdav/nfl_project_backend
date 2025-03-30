@@ -40,24 +40,21 @@ export class Controller {
         }
     }
 
-    getPlayerStats(req: any, res: any) {
-        this.service.getPlayerStats()
-            .then(data => {
-                res.send(data);
+    getRoster(req: any, res: any) {
+        let season: number = req.params.season;
+        let team: string = req.params.team;
+        this.service.getRoster(season, team)
+            .then(players => {
+                res.send(players);
             })
     }
 
-    getPlayerInfo(req: any, res: any) {
-        this.service.getPlayerInfo()
-            .then(data => {
-                res.send(data);
+    getPlayerProfile(req: any, res: any) {
+        let playerId: string = req.params.player_id;
+        this.service.getPlayerProfile(playerId)
+            .then(playerProfile => {
+                res.send(playerProfile);
             })
     }
 
-    getTeamColors(req: any, res: any) {
-        this.service.getTeamColors()
-            .then(data => {
-                res.send(data);
-            })
-    }
 }
