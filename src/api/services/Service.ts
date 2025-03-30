@@ -1,9 +1,12 @@
 import { Player_Stats } from "../../models/entities/Player_Stats";
 import { Games } from "../../models/entities/Games";
-import { Logos } from "../../models/entities/Logos";
 import { DataAccessObject } from "../dao/DataAccessObject";
 import { Players } from "../../models/entities/Players";
 import { Team_Colors } from "../../models/entities/Team_Colors";
+import { Team } from "../../models/domain-objects/Team";
+import { Seasons } from "../../models/domain-objects/Seasons";
+import { Roster } from "../../models/domain-objects/Roster";
+import { PlayerProfile } from "../../models/domain-objects/PlayerProfile";
 
 export class Service {
 
@@ -13,23 +16,28 @@ export class Service {
         this.dao = new DataAccessObject();
     }
 
-    getTeams(): Promise<Logos[]> {
-        return this.dao.getTeams();
+    getAllTeams(season: number): Promise<Team[]> {
+        return this.dao.getAllTeams(season);
     }
 
-    getGames(): Promise<Games[]> {
-        return this.dao.getGames();
+    getAllSeasons(): Promise<Seasons> {
+        return this.dao.getAllSeasons();
     }
 
-    getPlayerStats(): Promise<Player_Stats[]> {
-        return this.dao.getPlayerStats();
+    getGamesPerSeason(season: number): Promise<Games[]> {
+        return this.dao.getGamesPerSeason(season);
     }
 
-    getPlayerInfo(): Promise<Players[]> {
-        return this.dao.getPlayerInfo();
+    getGamesPerSeasonPerTeam(season: number, teams: string[]): Promise<Games[]> {
+        return this.dao.getGamesPerSeasonPerTeam(season, teams);
     }
 
-    getTeamColors(): Promise<Team_Colors[]> {
-        return this.dao.getTeamColors();
+    getRoster(season: number, team: string): Promise<Roster> {
+        return this.dao.getRoster(season, team);
     }
+
+    getPlayerProfile(playerId: string): Promise<PlayerProfile> {
+        return this.dao.getPlayerProfile(playerId);
+    }
+
 }

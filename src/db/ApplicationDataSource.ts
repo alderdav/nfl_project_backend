@@ -4,6 +4,8 @@ import { Players } from "../models/entities/Players";
 import { Player_Stats } from "../models/entities/Player_Stats";
 import { Games } from "../models/entities/Games";
 import { Logos } from "../models/entities/Logos";
+import { Team_Info } from "../models/views/Team_Info";
+import { Seasons } from "../models/views/Seasons";
 
 export class ApplicationDataSource {
 
@@ -31,7 +33,7 @@ export class ApplicationDataSource {
                 password: "password",
                 database: "nfl_db",
                 schema: 'nfl',
-                entities: [Team_Colors, Players, Player_Stats, Games, Logos]
+                entities: [Team_Colors, Players, Player_Stats, Games, Logos, Team_Info, Seasons]
             });
             this.dataSource.initialize()
                 .then(() => {
