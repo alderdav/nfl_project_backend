@@ -14,18 +14,8 @@ CacheManager.getCacheInstance().intializeCacheClient()
 
 // Container.getInstance();
 
-// app.use(express.json())
-
-export const checkCache = async (req: Request, res: Response, next: NextFunction) => {
-    const cache = CacheManager.getCacheInstance().getCacheClient();
-    const cachedData = await cache.get('cachedData');
-
-    if(cachedData) {
-        res.send(JSON.parse(cachedData));
-    } else {
-        next(); // Continue to route handler if data is not in cache
-    }
-}
+// This is global middleware
+app.use(express.json())
 
 //Still need to understand app.use() and the middleware
 app.use((req: Request, res: Response, next: Function) => {
@@ -39,7 +29,7 @@ app.use((req: Request, res: Response, next: Function) => {
 
 app.use('/', Router);
 
-app.get('/cache', checkCache, async (req: Request, res: Response) => {
+app.get('/cache', async (req: Request, res: Response) => {
     const cache = CacheManager.getCacheInstance().getCacheClient();
     const value = 'not in cache'
     res.send(value);

@@ -1,5 +1,6 @@
 import { RedisClientType } from "redis";
 import { CacheManager } from "../../db/CacheManager";
+import { NextFunction, Request, Response } from "express";
 
 export class Cache {
 
@@ -7,6 +8,20 @@ export class Cache {
 
     constructor() {
         this.cacheClient = CacheManager.getCacheInstance().getCacheClient();
+    }
+
+
+    public static async checkCacheAsync(req: Request, res: Response, next: NextFunction) {
+        const cacheClient = CacheManager.getCacheInstance().getCacheClient();;
+        const key = req.url;
+        cacheClient.get(key)
+        .then((cachedData) => {
+            if(cachedData) {
+                res.send(JSON.parse(cachedData));
+            } else {
+                next(); // Continue to route handler if data is not in cache
+            }
+        })
     }
 
     public checkCache(key: string): boolean {
