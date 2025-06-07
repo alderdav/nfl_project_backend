@@ -1,4 +1,4 @@
-import express, {Request, response, Response} from 'express';
+import express, {Request, Response} from 'express';
 import { Controller } from '../controllers/Controller';
 
 const router = express.Router();

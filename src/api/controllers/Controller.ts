@@ -1,26 +1,43 @@
 import { Service } from "../services/Service";
+import { Response, Request } from "express";
+import { Cache } from "../cache/Cache";
 
 export class Controller {
     
     private service: Service;
+    private cache: Cache;
 
     constructor() {
         this.service = new Service();
+        this.cache = new Cache();
     }
 
-    getAllTeams(req: any, res: any) { // I want to find out the correct interface for req, res
+    async getAllTeams(req: any, res: any) { // I want to find out the correct interface for req, res
         let season: number = req.params.season;
-        this.service.getAllTeams(season)
-            .then(teams => {
-                res.send(teams);
-            })
+        const teams = await this.service.getAllTeams(season);
+        res.send(teams);
     }
 
-    getAllSeasons(req: any, res: any) {
-        this.service.getAllSeasons()
+    getAllSeasons(req: Request, res: Response) {
+        const cacheKey = req.url;
+        if(this.cache.checkCache(cacheKey)) {
+            this.cache.grabCacheValue(cacheKey)
+            .then((cacheValue) => {
+                res.send(cacheValue);
+            })
+        } else {
+            this.service.getAllSeasons()
             .then(seasons => {
+                this.cache.setCacheValue(cacheKey, seasons, 0)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((err) => {
+                    console.log('There was an issue setting value in cache. Error => ', err)
+                })
                 res.send(seasons)
             })
+        }
     }
 
     getGames(req: any, res: any) {

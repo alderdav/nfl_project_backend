@@ -1,6 +1,6 @@
-import express, {Application, Request, Response} from 'express';
+import express, {Application, NextFunction, Request, Response} from 'express';
 import { ApplicationDataSource } from './db/ApplicationDataSource';
-import { Container } from './containers/Container';
+import { CacheManager } from "./db/CacheManager";
 import { Router } from './api/routes/Router';
 
 const app: Application = express();
@@ -10,9 +10,22 @@ ApplicationDataSource.getInstance().initializeDataSource()
         console.log(result);
     });
 
+CacheManager.getCacheInstance().intializeCacheClient()
+
 // Container.getInstance();
 
 // app.use(express.json())
+
+export const checkCache = async (req: Request, res: Response, next: NextFunction) => {
+    const cache = CacheManager.getCacheInstance().getCacheClient();
+    const cachedData = await cache.get('cachedData');
+
+    if(cachedData) {
+        res.send(JSON.parse(cachedData));
+    } else {
+        next(); // Continue to route handler if data is not in cache
+    }
+}
 
 //Still need to understand app.use() and the middleware
 app.use((req: Request, res: Response, next: Function) => {
@@ -25,6 +38,12 @@ app.use((req: Request, res: Response, next: Function) => {
 });
 
 app.use('/', Router);
+
+app.get('/cache', checkCache, async (req: Request, res: Response) => {
+    const cache = CacheManager.getCacheInstance().getCacheClient();
+    const value = 'not in cache'
+    res.send(value);
+})
 
 app.listen(port, () => {
     console.log(`Server is running on ${port}`);
