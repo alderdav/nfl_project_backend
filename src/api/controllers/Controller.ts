@@ -19,7 +19,7 @@ export class Controller {
         .then(data => {
             console.log('Here is the data', data)
         })
-        res.send(teams);
+        res.json(teams);
     }
 
     getAllSeasons(req: Request, res: Response) {
@@ -29,25 +29,34 @@ export class Controller {
             .then(data => {
                 console.log('Here is the data', data)
             })
-            res.send(seasons);
+            res.json(seasons);
         })
     }
 
+    //I should optimize this so that I am not calling two different cachin
     getGames(req: any, res: any) {
         let season: number = req.params.season;
         let teamsQueryPararm: string | undefined = req.query.teams;
+        let games = {}
         if(teamsQueryPararm) {
             let teamsList = teamsQueryPararm.split(',');
             this.service.getGamesPerSeasonPerTeam(season, teamsList)
-                .then(games => {
-                    res.send(games);
+                .then(gamesResponse => {
+                    games = gamesResponse
                 })
         } else {
             this.service.getGamesPerSeason(season)
-            .then(games => {
-                res.send(games);
+            .then(gamesResponse => {
+                games = gamesResponse
             })
         }
+
+        this.cache.setCacheValue(req.url, JSON.stringify(games), 0)
+        .then(data => {
+            console.log('Here is the data', data)
+        })
+
+        res.send(games);
     }
 
     getRoster(req: any, res: any) {
@@ -55,7 +64,11 @@ export class Controller {
         let team: string = req.params.team;
         this.service.getRoster(season, team)
             .then(players => {
-                res.send(players);
+                this.cache.setCacheValue(req.url, JSON.stringify(players), 0)
+                .then(data => {
+                    console.log('Here is the data', data)
+                })
+                res.json(players);
             })
     }
 
@@ -63,7 +76,11 @@ export class Controller {
         let playerId: string = req.params.player_id;
         this.service.getPlayerProfile(playerId)
             .then(playerProfile => {
-                res.send(playerProfile);
+                this.cache.setCacheValue(req.url, JSON.stringify(playerProfile), 0)
+                .then(data => {
+                    console.log('Here is the data', data)
+                })
+                res.json(playerProfile);
             })
     }
 

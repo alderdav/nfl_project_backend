@@ -29,12 +29,6 @@ app.use((req: Request, res: Response, next: Function) => {
 
 app.use('/', Router);
 
-app.get('/cache', async (req: Request, res: Response) => {
-    const cache = CacheManager.getCacheInstance().getCacheClient();
-    const value = 'not in cache'
-    res.send(value);
-})
-
 app.listen(port, () => {
     console.log(`Server is running on ${port}`);
 });
